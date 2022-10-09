@@ -37,15 +37,13 @@ async def chance(usercock: int):
 async def start(message: types.Message):
     await message.answer(startmsg)
     conn = sq.connect('users.db')
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
-        userindb = cur.fetchall()
-        if userindb == []:
-            cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
-            conn.commit()
-            cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
-            userindb = cur.fetchall()
-            conn.close()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
+    userindb = cur.fetchall()
+    if userindb == []:
+        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
+        conn.commit()
+    conn.close()
 
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
