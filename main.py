@@ -49,7 +49,19 @@ async def start(message: types.Message):
         cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
         conn.commit()
     conn.close()
-
+@dp.message_handler(commands=["profile","p","п","профиль"])
+async def start(message: types.Message):
+    
+    conn = sq.connect('users.db')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
+    userindb = cur.fetchall()
+    if userindb == []:
+        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
+        conn.commit()
+    conn.close()
+    db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock = userindb[0]
+    await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
     msg = message.text.split(" ")
@@ -70,33 +82,36 @@ async def cock(message: types.Message):
             conn.commit()
             cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
             userindb = cur.fetchall()
-            conn.close()
     
         userindb = userindb[0]
         db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock = userindb
-        deystv = await chance(db_cock_lenght)
-        if isinstance(deystv, int):
-            db_cock_lenght += deystv
-            if deystv > 0:
-                smbl = "+"
+        if db_last_cock+86400 <= int(time()):
+            deystv = await chance(db_cock_lenght)
+            if isinstance(deystv, int):
+                db_cock_lenght += deystv
+                if deystv > 0:
+                    smbl = "+"
+                else:
+                    smbl = "-"
+                msg = cockmsg(smbl, int(abs(deystv)))
             else:
-                smbl = "-"
-            msg = cockmsg(smbl, int(abs(deystv)))
+                if deystv == "x2":
+                    db_cock_lenght = db_cock_lenght*2
+                    msg = cockmsg("x2", db_cock_lenght)
+                    
+                else:
+                    msg = cockmsg("otval", db_cock_lenght)
+                    if db_old_cock < db_cock_lenght:
+                        db_old_cock = db_cock_lenght
+                    db_cock_lenght = 0
+                    
+            cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=? WHERE tgid=?', (db_cock_lenght, int(time()), db_old_cock, db_tgid))
+            conn.commit()
+            conn.close()
+            await message.answer(msg)
         else:
-            if deystv == "x2":
-                db_cock_lenght = db_cock_lenght*2
-                msg = cockmsg("x2", db_cock_lenght)
-                
-            else:
-                msg = cockmsg("otval", db_cock_lenght)
-                if db_old_cock < db_cock_lenght:
-                    db_old_cock = db_cock_lenght
-                db_cock_lenght = 0
-                
-        cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=? WHERE tgid=?', (db_cock_lenght, int(time()), db_old_cock, db_tgid))
-        conn.commit()
-        conn.close()
-        await message.answer(msg)
+            await message.answer(wait(db_last_cock + 86400 - int(time())))
+            conn.close()
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
