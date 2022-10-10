@@ -50,9 +50,9 @@ async def cock(message: types.Message):
     msg = message.text.split(" ")
     if len(msg) == 2:
         if msg[1] in cock_top_aliases:
-            await message.answer(await tb_indev(message.text))
+            await message.answer(tb_indev(message.text))
         elif msg[1] in cock_atop_aliases:
-            await message.answer(await tb_indev(message.text))
+            await message.answer(tb_indev(message.text))
         else:
             await message.answer(tb_not_found)
     else:
