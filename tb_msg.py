@@ -18,6 +18,12 @@ startmsg = """Бот с функцией крутануть кок ✅
 def wait(time):
     return "Вы не можете крутануть свой кок, с момента последней прокрутки прошло менее 24х часов.\n Осталось {time}"
 
+def profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock):
+    msg = f"""Ваш профиль:
+Длина вашего кока: {db_cock_lenght}
+Максимально отпавший кок: {db_old_cock}
+Дата последнего кручения: {db_last_cock}
+Дата регистрации: {db_reg_time}"""
 
 def tb_indev(command: str):
     return f"""Команда "{command}" находится в разработке, или отключена."""

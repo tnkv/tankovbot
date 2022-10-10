@@ -14,6 +14,11 @@ conn = sq.connect('users.db')
 cur = conn.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS tgusers
               (tgid TEXT, register_date INTEGER, cock_lenght INTEGER, last_cock INTEGER, old_cock)''')
+              # tgid -- ТГ айди пользователя
+              #register_date -- Дата регистрации
+              #cock_lenght -- Длина кока сейчас
+              #last_cock -- Дата последнего кручения
+              #old_cock -- Крупнейший оторвавшийся кок
 cur.close()
 
 logging.basicConfig(level=logging.INFO)
