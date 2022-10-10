@@ -59,6 +59,8 @@ async def start(message: types.Message):
     if userindb == []:
         cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
         conn.commit()
+        userindb = cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
+
     conn.close()
     db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock = userindb[0]
     await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
