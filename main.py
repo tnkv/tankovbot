@@ -65,7 +65,7 @@ async def start(message: types.Message):
         userindb = cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
 
     conn.close()
-    db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock = userindb[0]
+    db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock, db_first_name, db_last_name, db_username = userindb[0]
     await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
