@@ -122,6 +122,7 @@ async def top(message: types.Message):
     cur.execute("ALTER TABLE tgusers ADD COLUMN first_name 'TEXT'")
     cur.execute("ALTER TABLE tgusers ADD COLUMN last_name 'TEXT'")
     cur.execute("ALTER TABLE tgusers ADD COLUMN username 'TEXT'")
+    conn.commit()
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
