@@ -27,7 +27,35 @@ conn.close()
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=tg_token, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
-
+async def top():
+    dict = {}
+    conn = sq.connect('users.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght DESC")
+    result = cur.fetchmany(10)
+    place = 1
+    for x in result:
+        username = str(x[7])
+        first_name = str(x[5])
+        tgid = str(x[0])
+        last_name = str(x[6])
+        full_name = first_name
+        if last_name != "None":
+            full_name = full_name + " "+ last_name
+        if username != "None" and first_name != "None":
+            dict[str(place)] = [x[7], full_name, x[2], "FULLANDNAME"] # юзерка, фулл нейм, кок, тип
+            place += 1
+        elif username == "None" and first_name == "None":
+            dict[str(place)] = [x[0],x[2],"ID"] # ид, кок, тип
+            place += 1
+        elif first_name == "None":
+            dict[str(place)] = [x[7],x[2], "USERNAME"] # юзерка, кок, тип
+            place += 1
+        else:
+            dict[str(place)] = [full_name,x[2], "FULLNAME"] # фулл нейм, кок, тип
+            place += 1
+    conn.close
+    return cocktops(dict)
 async def chance(usercock: int):
     growth = randint(1, 20)
     chance = randint(0,100)
@@ -72,7 +100,8 @@ async def cock(message: types.Message):
     msg = message.text.split(" ")
     if len(msg) == 2:
         if msg[1] in cock_top_aliases:
-            await message.answer(tb_indev(message.text))
+            ct = await top()
+            await message.answer(ct, disable_web_page_preview=True)
         elif msg[1] in cock_atop_aliases:
             await message.answer(tb_indev(message.text))
         else:

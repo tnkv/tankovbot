@@ -1,5 +1,6 @@
 #Список воозжможных сообщений.
 from datetime import datetime, timedelta
+from termios import TIOCPKT, TIOCPKT_DATA
 
 can_after24 = "\nВы сможете крутануть свой кок ещё раз через 24 часа."
 
@@ -22,7 +23,7 @@ def wait(time):
 def profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock):
     db_reg_date = f"{datetime.utcfromtimestamp(db_reg_date+(3600*3)).strftime('%Y-%m-%d %H:%M:%S')} МСК"
     db_last_cock = f"{datetime.utcfromtimestamp(db_last_cock+(3600*3)).strftime('%Y-%m-%d %H:%M:%S')} МСК"
-    msg = f"""✅ Длина вашего кока: {db_cock_lenght}
+    msg = f"""✅ Длина вашего кока: {db_cock_lenght} см.
 🚀 Максимально отпавший кок: {db_old_cock}
 💀 Дата последнего кручения: {db_last_cock}
 🤓 Дата регистрации: {db_reg_date}"""
@@ -40,3 +41,16 @@ def cockmsg(deystv: str, num = 0):
         return "➕ | Ваш кок увеличился на " + str(num)+ " см." + can_after24
     else:
         return "➖ | Ваш кок уменьшился на " + str(num)+ " см." + can_after24
+
+def cocktops(top):
+    msg = "<b>Топ коков</b>"
+    for i in top:
+        if top[i][-1] == "ID":
+            msg += f"\n{i}) <code>{top[i][0]}</code>: {top[i][1]} см."
+        elif top[i][-1] == "FULLNAME":
+            msg += f"\n{i}) <code>{top[i][0]}</code>: {top[i][1]} см."
+        elif top[i][-1] == "USERNAME":
+            msg += f'\n{i}) <a href="t.me/{top[i][0]}">{top[i][0]}</a>: {top[i][1]} см.'
+        else:
+            msg += f'\n{i}) <a href="t.me/{top[i][0]}">{top[i][1]}</a>: {top[i][2]} см.'
+    return msg
