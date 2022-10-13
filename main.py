@@ -89,7 +89,7 @@ async def cock(message: types.Message):
             userindb = cur.fetchall()
     
         userindb = userindb[0]
-        db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock = userindb
+        db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock, db_first_name, db_last_name, db_username = userindb
         if db_last_cock+86400 <= int(time()):
             deystv = await chance(db_cock_lenght)
             if isinstance(deystv, int):
@@ -117,12 +117,15 @@ async def cock(message: types.Message):
         else:
             await message.answer(wait(db_last_cock + 86400 - int(time())))
             conn.close()
-@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
-async def top(message: types.Message):
-    cur.execute("ALTER TABLE tgusers ADD COLUMN first_name 'TEXT'")
-    cur.execute("ALTER TABLE tgusers ADD COLUMN last_name 'TEXT'")
-    cur.execute("ALTER TABLE tgusers ADD COLUMN username 'TEXT'")
-    conn.commit()
-
+#@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
+#async def top(message: types.Message):
+#    conn = sq.connect('users.db')
+#    cur = conn.cursor()
+#    cur.execute("ALTER TABLE tgusers ADD COLUMN first_name 'TEXT'")
+#    cur.execute("ALTER TABLE tgusers ADD COLUMN last_name 'TEXT'")
+#    cur.execute("ALTER TABLE tgusers ADD COLUMN username 'TEXT'")
+#    conn.commit()
+#    conn.close()
+#    await message.answer("done.")
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
