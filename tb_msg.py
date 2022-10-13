@@ -43,7 +43,7 @@ def cockmsg(deystv: str, num = 0):
         return "➖ | Ваш кок уменьшился на " + str(num)+ " см." + can_after24
 
 def cocktops(top):
-    msg = "<b>Топ коков</b>"
+    msg = "<b>🏆 Топ коков</b>"
     for i in top:
         if top[i][-1] == "ID":
             msg += f"\n{i}) <code>{top[i][0]}</code>: {top[i][1]} см."
