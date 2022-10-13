@@ -81,7 +81,7 @@ async def start(message: types.Message):
         conn.commit()
     conn.close()
 @dp.message_handler(commands=["profile","p","п","профиль"])
-async def start(message: types.Message):
+async def profiles(message: types.Message):
     
     conn = sq.connect('users.db')
     cur = conn.cursor()
@@ -92,8 +92,12 @@ async def start(message: types.Message):
         conn.commit()
         userindb = cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
 
-    conn.close()
+    
     db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock, db_first_name, db_last_name, db_username = userindb[0]
+    if db_first_name == None:
+        cur.execute('UPDATE tgusers SET first_name=?, last_name=?, username=? WHERE tgid=?', (message.from_user.first_name, message.from_user.last_name, message.from_user.username, db_tgid))
+        conn.commit()
+    conn.close()
     await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
