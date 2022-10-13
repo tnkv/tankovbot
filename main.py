@@ -19,6 +19,9 @@ cur.execute('''CREATE TABLE IF NOT EXISTS tgusers
               #cock_lenght -- Длина кока сейчас
               #last_cock -- Дата последнего кручения
               #old_cock -- Крупнейший оторвавшийся кок
+              #first_name -- Имя юзера
+              #last_name -- Фамилия юзера
+              #username -- Юзерка юзера
 conn.close()
 
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +49,7 @@ async def start(message: types.Message):
     cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
     userindb = cur.fetchall()
     if userindb == []:
-        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
+        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock, first_name, last_name, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
         conn.commit()
     conn.close()
 @dp.message_handler(commands=["profile","p","п","профиль"])
@@ -57,7 +60,7 @@ async def start(message: types.Message):
     cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
     userindb = cur.fetchall()
     if userindb == []:
-        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
+        cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock, first_name, last_name, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
         conn.commit()
         userindb = cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
 
@@ -80,7 +83,7 @@ async def cock(message: types.Message):
         cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
         userindb = cur.fetchall()
         if userindb == []:
-            cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock) VALUES (?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0))
+            cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock, first_name, last_name, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
             conn.commit()
             cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
             userindb = cur.fetchall()
@@ -107,13 +110,18 @@ async def cock(message: types.Message):
                         db_old_cock = db_cock_lenght
                     db_cock_lenght = 0
                     
-            cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=? WHERE tgid=?', (db_cock_lenght, int(time()), db_old_cock, db_tgid))
+            cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=?, first_name=?, last_name=?, username=? WHERE tgid=?', (db_cock_lenght, int(time()), db_old_cock, message.from_user.first_name, message.from_user.last_name, message.from_user.username, db_tgid))
             conn.commit()
             conn.close()
             await message.answer(msg)
         else:
             await message.answer(wait(db_last_cock + 86400 - int(time())))
             conn.close()
+@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
+async def top(message: types.Message):
+    cur.execute("ALTER TABLE tgusers ADD COLUMN first_name 'TEXT'")
+    cur.execute("ALTER TABLE tgusers ADD COLUMN last_name 'TEXT'")
+    cur.execute("ALTER TABLE tgusers ADD COLUMN username 'TEXT'")
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
