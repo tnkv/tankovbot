@@ -19,7 +19,7 @@ cur.execute('''CREATE TABLE IF NOT EXISTS tgusers
               #cock_lenght -- Длина кока сейчас
               #last_cock -- Дата последнего кручения
               #old_cock -- Крупнейший оторвавшийся кок
-cur.close()
+conn.close()
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=tg_token, parse_mode=types.ParseMode.HTML)
