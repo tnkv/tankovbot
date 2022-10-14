@@ -71,6 +71,8 @@ async def chance(usercock: int):
 
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
+    if message.from_user.id in blocked_ids:
+        return
     await message.answer(startmsg)
     conn = sq.connect('users.db')
     cur = conn.cursor()
@@ -91,6 +93,7 @@ async def profiles(message: types.Message):
         cur.execute('INSERT INTO tgusers (tgid, register_date, cock_lenght, last_cock, old_cock, first_name, last_name, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (message.from_user.id, int(time()), 0, 0, 0, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
         conn.commit()
         userindb = cur.execute('SELECT * FROM tgusers WHERE tgid = ?', (message.from_user.id,))
+        userindb = cur.fetchall()
 
     
     db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock, db_first_name, db_last_name, db_username = userindb[0]
@@ -101,6 +104,9 @@ async def profiles(message: types.Message):
     await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
+    if message.from_user.id in blocked_ids:
+        await message.answer(tb_access_denied)
+        return
     msg = message.text.split(" ")
     if len(msg) == 2:
         if msg[1] in cock_top_aliases:

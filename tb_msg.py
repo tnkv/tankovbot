@@ -1,5 +1,6 @@
 #Список воозжможных сообщений.
 from datetime import datetime, timedelta
+from mmap import ACCESS_DEFAULT
 from termios import TIOCPKT, TIOCPKT_DATA
 
 can_after24 = "\nВы сможете крутануть свой кок ещё раз через 24 часа."
@@ -15,6 +16,9 @@ startmsg = """Бот с функцией крутануть кок ✅
 <code>/кок антитоп</code>
 
 Обязательно напишу в щитпост, если не забуду"""
+
+
+tb_access_denied = "Использование этой команды от лица данного пользователя невозможно. Пользователь находится в списке заблокированных.\n\nВозможные причины блокировки: \nИспользование анонимных каналов."
 
 def wait(time):
     time = timedelta(seconds = time)
