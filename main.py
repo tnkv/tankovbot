@@ -137,7 +137,7 @@ async def cock(message: types.Message):
                     smbl = "+"
                 else:
                     smbl = "-"
-                msg = cockmsg(smbl, int(abs(deystv)))
+                msg = cockmsg(smbl, int(abs(deystv)), db_cock_lenght)
             else:
                 if deystv == "x2":
                     db_cock_lenght = db_cock_lenght*2
