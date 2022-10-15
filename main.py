@@ -156,6 +156,21 @@ async def cock(message: types.Message):
         else:
             await message.answer(wait(db_last_cock + 86400 - int(time())))
             conn.close()
+@dp.message_handler(commands=["reset"])
+async def cock(message: types.Message):
+    msg = message.text.split()
+    conn = sq.connect('users.db')
+    cur = conn.cursor()
+    if message.from_user.id in admin_ids:
+        if len(msg) == 2:
+            cur.execute('UPDATE tgusers SET cock_lenght=?, old_cock=? WHERE tgid=?', (0, 0, msg[1]))
+            conn.commit()
+            conn.close()
+        if len(msg) == 3:
+            if msg[2] == "full":
+                cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=? WHERE tgid=?', (0, 0, 0, msg[1]))
+                conn.commit()
+                conn.close()
 #@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
 #async def top(message: types.Message):
 #    conn = sq.connect('users.db')
