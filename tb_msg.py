@@ -36,15 +36,15 @@ def profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock):
 def tb_indev(command: str):
     return f"""Команда "{command}" находится в разработке, или отключена."""
 
-def cockmsg(deystv: str, num = 0):
+def cockmsg(deystv: str, num = 0, nowcock = 0):
     if deystv == "otval":
         return "🤯 | Ваш кок оторвался и улетел вдаль, пиздец...\nЕго длина была равна: " + str(num) + " см." + can_after24
     elif deystv == "x2":
         return "😎 | Ваш кок увеличился в два раза!\nТеперь его длина равна: " + str(num) + " см." + can_after24
     elif deystv == "+":
-        return "➕ | Ваш кок увеличился на " + str(num)+ " см." + can_after24
+        return "➕ | Ваш кок увеличился на " + str(num)+ " см.\nТеперь его длина: " + str(nowcock) + " см." + can_after24
     else:
-        return "➖ | Ваш кок уменьшился на " + str(num)+ " см." + can_after24
+        return "➖ | Ваш кок уменьшился на " + str(num)+ " см.\nТеперь его длина: " + str(nowcock) + " см." + can_after24
 
 def cocktops(top):
     msg = "<b>🏆 Топ коков</b>"
