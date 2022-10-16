@@ -56,6 +56,7 @@ async def top():
             place += 1
     conn.close
     return cocktops(cockt_slov)
+    
 async def chance(usercock: int):
     growth = randint(1, 20)
     chance = randint(0,100)
@@ -157,8 +158,14 @@ async def cock(message: types.Message):
             msg_we = await message.answer(wait(db_last_cock + 86400 - int(time())))
             conn.close()
             await asyncio.sleep(10)
-            await msg_we.delete()
-            await message.delete()
+            try:
+                await msg_we.delete()
+            except:
+                pass
+            try:
+                await message.delete()
+            except:
+                pass
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()
