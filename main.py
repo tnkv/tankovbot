@@ -28,7 +28,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=tg_token, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
 async def top():
-    dict = {}
+    cockt_slov = {}
     conn = sq.connect('users.db')
     cur = conn.cursor()
     cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght DESC")
@@ -43,19 +43,19 @@ async def top():
         if last_name != "None":
             full_name = full_name + " "+ last_name
         if username != "None" and first_name != "None":
-            dict[str(place)] = [x[7], full_name, x[2], "FULLANDNAME"] # юзерка, фулл нейм, кок, тип
+            cockt_slov[str(place)] = [x[7], full_name, x[2], "FULLANDNAME"] # юзерка, фулл нейм, кок, тип
             place += 1
         elif username == "None" and first_name == "None":
-            dict[str(place)] = [x[0],x[2],"ID"] # ид, кок, тип
+            cockt_slov[str(place)] = [x[0],x[2],"ID"] # ид, кок, тип
             place += 1
         elif first_name == "None":
-            dict[str(place)] = [x[7],x[2], "USERNAME"] # юзерка, кок, тип
+            cockt_slov[str(place)] = [x[7],x[2], "USERNAME"] # юзерка, кок, тип
             place += 1
         else:
-            dict[str(place)] = [full_name,x[2], "FULLNAME"] # фулл нейм, кок, тип
+            cockt_slov[str(place)] = [full_name,x[2], "FULLNAME"] # фулл нейм, кок, тип
             place += 1
     conn.close
-    return cocktops(dict)
+    return cocktops(cockt_slov)
 async def chance(usercock: int):
     growth = randint(1, 20)
     chance = randint(0,100)
@@ -154,8 +154,11 @@ async def cock(message: types.Message):
             conn.close()
             await message.answer(msg)
         else:
-            await message.answer(wait(db_last_cock + 86400 - int(time())))
+            msg_we = await message.answer(wait(db_last_cock + 86400 - int(time())))
             conn.close()
+            await asyncio.sleep(10)
+            await msg_we.delete()
+            await message.delete()
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()
