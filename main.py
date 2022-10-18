@@ -27,11 +27,14 @@ conn.close()
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=tg_token, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
-async def top():
+async def top(stts):
     cockt_slov = {}
     conn = sq.connect('users.db')
     cur = conn.cursor()
-    cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght DESC")
+    if stts == "top":
+        cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght DESC")
+    elif stts == "atop":
+        cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght ASC")
     result = cur.fetchmany(10)
     place = 1
     for x in result:
@@ -55,7 +58,7 @@ async def top():
             cockt_slov[str(place)] = [full_name,x[2], "FULLNAME"] # фулл нейм, кок, тип
             place += 1
     conn.close
-    return cocktops(cockt_slov)
+    return cocktops(cockt_slov, stts)
     
 async def chance(usercock: int):
     growth = randint(1, 20)
@@ -111,10 +114,9 @@ async def cock(message: types.Message):
     msg = message.text.split(" ")
     if len(msg) == 2:
         if msg[1] in cock_top_aliases:
-            ct = await top()
-            await message.answer(ct, disable_web_page_preview=True)
+            await message.answer(await top("top"), disable_web_page_preview=True)
         elif msg[1] in cock_atop_aliases:
-            await message.answer(tb_indev(message.text))
+            await message.answer(await top("atop"), disable_web_page_preview=True)
         else:
             await message.answer(tb_not_found)
     else:
@@ -166,6 +168,16 @@ async def cock(message: types.Message):
                 await message.delete()
             except:
                 pass
+
+@dp.message_handler(commands=["кокт", "top", "cockt", "топ""кокт", "top", "cockt","atop", "cockat", "атоп"])
+async def cocktop(message: types.Message):
+    msg = message.text.split()
+    if msg[0] in ["/кокт", "/top", "/cockt", "/топ"]:
+        await message.answer(await top("top"), disable_web_page_preview=True)
+    elif msg[0] in ["/кокат", "/atop", "/cockat", "/атоп"]:
+        await message.answer(await top("atop"), disable_web_page_preview=True)
+
+
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()
@@ -181,6 +193,8 @@ async def cock(message: types.Message):
                 cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=? WHERE tgid=?', (0, 0, 0, msg[1]))
                 conn.commit()
                 conn.close()
+    else:
+        pass
 #@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
 #async def top(message: types.Message):
 #    conn = sq.connect('users.db')
