@@ -114,7 +114,12 @@ async def cock(message: types.Message):
             ct = await top()
             await message.answer(ct, disable_web_page_preview=True)
         elif msg[1] in cock_atop_aliases:
-            await message.answer(tb_indev(message.text))
+            msg_ind = await message.answer(tb_indev(message.text))
+            await asyncio.sleep(5)
+            try:
+                await msg_id.delete()
+            except:
+                pass
         else:
             await message.answer(tb_not_found)
     else:
