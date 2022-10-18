@@ -169,15 +169,13 @@ async def cock(message: types.Message):
             except:
                 pass
 
-@dp.message_handler(commands=["кокт", "top", "cockt", "топ""кокт", "top", "cockt","atop", "cockat", "атоп"])
+@dp.message_handler(commands=["кокт", "top", "cockt", "топ"])
 async def cocktop(message: types.Message):
-    msg = message.text.split()
-    if msg[0] in ["/кокт", "/top", "/cockt", "/топ"]:
-        await message.answer(await top("top"), disable_web_page_preview=True)
-    elif msg[0] in ["/кокат", "/atop", "/cockat", "/атоп"]:
-        await message.answer(await top("atop"), disable_web_page_preview=True)
-
-
+    await message.answer(await top("top"), disable_web_page_preview=True)
+        
+@dp.message_handler(commands=["кокат", "atop", "cockat", "атоп"])
+async def cockatop(message: types.Message):
+    await message.answer(await top("atop"), disable_web_page_preview=True)
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()
