@@ -1,5 +1,6 @@
 #Список воозжможных сообщений.
 from datetime import datetime, timedelta
+import locale
 from mmap import ACCESS_DEFAULT
 from termios import TIOCPKT, TIOCPKT_DATA
 
@@ -36,8 +37,12 @@ def wait(time):
     return f"😐 Вы не можете крутануть свой кок, с момента последней прокрутки прошло менее 24х часов.\n✅ Осталось: {time}"
 
 def profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock):
-    db_reg_date = f"{datetime.utcfromtimestamp(db_reg_date+(3600*3)).strftime('%Y-%m-%d %H:%M:%S')} МСК"
-    db_last_cock = f"{datetime.utcfromtimestamp(db_last_cock+(3600*3)).strftime('%Y-%m-%d %H:%M:%S')} МСК"
+    try:
+        locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+    except:
+        pass
+    db_reg_date = f"{datetime.utcfromtimestamp(db_reg_date+(3600*3)).strftime('%d %b. %Y г., %H:%M')} МСК"
+    db_last_cock = f"{datetime.utcfromtimestamp(db_last_cock+(3600*3)).strftime('%d %b. %Y г., %H:%M')} МСК"
     msg = f"""✅ Длина вашего кока: {db_cock_lenght} см.
 🚀 Максимально отпавший кок: {db_old_cock}
 💀 Дата последнего кручения: {db_last_cock}
