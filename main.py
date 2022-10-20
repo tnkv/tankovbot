@@ -105,11 +105,11 @@ async def profiles(message: types.Message):
         cur.execute('UPDATE tgusers SET first_name=?, last_name=?, username=? WHERE tgid=?', (message.from_user.first_name, message.from_user.last_name, message.from_user.username, db_tgid))
         conn.commit()
     conn.close()
-    await message.answer(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
+    await message.reply(profile(db_reg_date, db_cock_lenght, db_last_cock, db_old_cock))
 @dp.message_handler(commands=["кок", "cock"])
 async def cock(message: types.Message):
     if message.from_user.id in blocked_ids:
-        await message.answer(tb_access_denied)
+        await message.reply(tb_access_denied)
         return
     msg = message.text.split(" ")
     if len(msg) == 2:
@@ -118,7 +118,7 @@ async def cock(message: types.Message):
         elif msg[1] in cock_atop_aliases:
             await message.answer(await top("atop"), disable_web_page_preview=True)
         else:
-            await message.answer(tb_not_found)
+            await message.reply(tb_not_found)
     else:
         conn = sq.connect('users.db')
         cur = conn.cursor()
@@ -155,9 +155,9 @@ async def cock(message: types.Message):
             cur.execute('UPDATE tgusers SET cock_lenght=?, last_cock=?, old_cock=?, first_name=?, last_name=?, username=? WHERE tgid=?', (db_cock_lenght, int(time()), db_old_cock, message.from_user.first_name, message.from_user.last_name, message.from_user.username, db_tgid))
             conn.commit()
             conn.close()
-            await message.answer(msg)
+            await message.reply(msg)
         else:
-            msg_we = await message.answer(wait(db_last_cock + 86400 - int(time())))
+            msg_we = await message.reply(wait(db_last_cock + 86400 - int(time())))
             conn.close()
             await asyncio.sleep(10)
             try:
@@ -193,6 +193,13 @@ async def cock(message: types.Message):
                 conn.close()
     else:
         pass
+@dp.message_handler(content_types=['new_chat_members'])
+async def send_welcome(message: types.Message):
+    bot_obj = await bot.get_me()
+    bot_id = bot_obj.id
+    for chat_member in message.new_chat_members:
+        if chat_member.id == bot_id:
+            await message.answer(tb_add_tochat)
 #@dp.message_handler(commands=["update"]) ## ОБНОВИТЬ БД (юзернеймы) ИСПОЛЬЗОВАТЬ ОДИН РАЗ, так же можно использовать для дальнейших апдейтов, просто задокументировать
 #async def top(message: types.Message):
 #    conn = sq.connect('users.db')
