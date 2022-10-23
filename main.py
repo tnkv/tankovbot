@@ -63,14 +63,14 @@ async def top(stts):
 async def chance(usercock: int):
     growth = randint(1, 20)
     chance = randint(0,100)
-    if usercock >= 100 and randint(0,100) <= (usercock /100):
+    if usercock >= 100 and randint(1,100) <= (usercock /100):
         return "otval"
     else:
         if chance >= 0 and chance <= 10 and usercock >= -1000:
             return growth * -1
         elif chance > 10 and chance <= 95:
             return growth
-        else:
+        elif chance > 95 and chance <= 100:
             return "x2"
 
 @dp.message_handler(commands=["start"])
