@@ -63,7 +63,7 @@ async def top(stts):
 async def chance(usercock: int):
     growth = randint(1, 20)
     chance = randint(0,100)
-    if usercock >= 100 and randint(1,100) <= (usercock /100):
+    if usercock >= 100 and randint(0,100) <= (usercock /100):
         return "otval"
     else:
         if chance >= 0 and chance <= 10 and usercock >= -1000:
