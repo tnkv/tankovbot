@@ -13,7 +13,7 @@ import logging
 conn = sq.connect('users.db')
 cur = conn.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS tgusers
-              (tgid TEXT, register_date INTEGER, cock_lenght INTEGER, last_cock INTEGER, old_cock)''')
+              (tgid TEXT, register_date INTEGER, cock_lenght INTEGER, last_cock INTEGER, old_cock INTEGER, first_name TEXT, last_name TEXT, username TEXT)''')
               # tgid -- ТГ айди пользователя
               #register_date -- Дата регистрации
               #cock_lenght -- Длина кока сейчас
@@ -35,9 +35,14 @@ async def top(stts):
         cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght DESC")
     elif stts == "atop":
         cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght ASC")
+    elif stts == "lngst":
+        cur.execute("SELECT * FROM tgusers ORDER BY old_cock DESC")
     result = cur.fetchmany(10)
     place = 1
     for x in result:
+        user_num = str(x[2])
+        if stts == "lngst":
+            user_num = str(x[4])
         username = str(x[7])
         first_name = str(x[5])
         tgid = str(x[0])
@@ -46,16 +51,16 @@ async def top(stts):
         if last_name != "None":
             full_name = full_name + " "+ last_name
         if username != "None" and first_name != "None":
-            cockt_slov[str(place)] = [x[7], full_name, x[2], "FULLANDNAME"] # юзерка, фулл нейм, кок, тип
+            cockt_slov[str(place)] = [username, full_name, user_num, "FULLANDNAME"] # юзерка, фулл нейм, кок/отвал, тип
             place += 1
         elif username == "None" and first_name == "None":
-            cockt_slov[str(place)] = [x[0],x[2],"ID"] # ид, кок, тип
+            cockt_slov[str(place)] = [tgid,user_num,"ID"] # ид, кок/отвал, тип
             place += 1
         elif first_name == "None":
-            cockt_slov[str(place)] = [x[7],x[2], "USERNAME"] # юзерка, кок, тип
+            cockt_slov[str(place)] = [username,user_num, "USERNAME"] # юзерка, кок/отвал, тип
             place += 1
         else:
-            cockt_slov[str(place)] = [full_name,x[2], "FULLNAME"] # фулл нейм, кок, тип
+            cockt_slov[str(place)] = [full_name,user_num, "FULLNAME"] # фулл нейм, кок/отвал, тип
             place += 1
     conn.close
     return cocktops(cockt_slov, stts)
@@ -117,6 +122,8 @@ async def cock(message: types.Message):
             await message.answer(await top("top"), disable_web_page_preview=True)
         elif msg[1] in cock_atop_aliases:
             await message.answer(await top("atop"), disable_web_page_preview=True)
+        elif msg[1] in cock_lngst_aliases:
+            await message.answer(await top("lngst"), disable_web_page_preview=True)
         else:
             await message.reply(tb_not_found)
     else:
@@ -176,6 +183,9 @@ async def cocktop(message: types.Message):
 @dp.message_handler(commands=["кокат", "atop", "cockat", "атоп"])
 async def cockatop(message: types.Message):
     await message.answer(await top("atop"), disable_web_page_preview=True)
+@dp.message_handler(commands=["коклт", "ltop", "cocklt", "лтоп"])
+async def cockatop(message: types.Message):
+    await message.answer(await top("lngst"), disable_web_page_preview=True)
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()

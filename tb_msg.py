@@ -63,11 +63,13 @@ def cockmsg(deystv: str, num = 0, nowcock = 0):
         return "➖ | Ваш кок уменьшился на " + str(num)+ " см.\nТеперь его длина: " + str(nowcock) + " см." + can_after24
 
 def cocktops(top,stts):
-    if stts == "top":
-        msg = "<b>🏆 Топ коков</b>"
-    else:
-        msg = "<b>🏆 Анти-Топ коков</b>"
+    if stts == "top": msg = "<b>🏆 Топ коков</b>"
+    elif stts == "atop": msg = "<b>🏆 Анти-Топ коков</b>"
+    elif stts == "lngst": msg = "<b>🏆 Топ оторвавшихся коков</b>"
+    else: msg = "<b>trolling</b>"
     for i in top:
+        if top[i][2] in ("0", "ID"):
+            continue
         if top[i][-1] == "ID":
             msg += f"\n{i}) <code>{top[i][0]}</code>: {top[i][1]} см."
         elif top[i][-1] == "FULLNAME":
