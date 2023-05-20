@@ -168,11 +168,8 @@ async def cock(message: types.Message):
             conn.close()
             await asyncio.sleep(10)
             try:
-                await msg_we.delete()
-            except:
-                pass
-            try:
                 await message.delete()
+                await msg_we.delete()
             except:
                 pass
 
