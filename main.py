@@ -37,6 +37,8 @@ async def top(stts):
         cur.execute("SELECT * FROM tgusers ORDER BY cock_lenght ASC")
     elif stts == "lngst":
         cur.execute("SELECT * FROM tgusers ORDER BY old_cock DESC")
+    elif stts == "truet":
+        cur.execute("SELECT * FROM tgusers WHERE last_cock >= ? ORDER BY cock_lenght DESC", (int(time()) - 604800,))
     result = cur.fetchmany(10)
     place = 1
     for x in result:
@@ -124,6 +126,8 @@ async def cock(message: types.Message):
             await message.answer(await top("atop"), disable_web_page_preview=True)
         elif msg[1] in cock_lngst_aliases:
             await message.answer(await top("lngst"), disable_web_page_preview=True)
+        elif msg[1] in cock_ttop_aliases:
+            await message.answer(await top("truet"), disable_web_page_preview=True)
         else:
             await message.reply(tb_not_found)
     else:
@@ -183,6 +187,10 @@ async def cockatop(message: types.Message):
 @dp.message_handler(commands=["коклт", "ltop", "cocklt", "лтоп"])
 async def cockatop(message: types.Message):
     await message.answer(await top("lngst"), disable_web_page_preview=True)
+@dp.message_handler(commands=["коктт", "ttop", "cocktt", "ттоп"])
+async def cockatop(message: types.Message):
+    await message.answer(await top("truet"), disable_web_page_preview=True)
+
 @dp.message_handler(commands=["reset"])
 async def cock(message: types.Message):
     msg = message.text.split()

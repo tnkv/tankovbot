@@ -1,8 +1,6 @@
 #Список воозжможных сообщений.
 from datetime import datetime, timedelta
 import locale
-from mmap import ACCESS_DEFAULT
-from termios import TIOCPKT, TIOCPKT_DATA
 
 can_after24 = "\nВы сможете крутануть свой кок ещё раз через 24 часа."
 
@@ -66,6 +64,7 @@ def cocktops(top,stts):
     if stts == "top": msg = "<b>🏆 Топ коков</b>"
     elif stts == "atop": msg = "<b>🏆 Анти-Топ коков</b>"
     elif stts == "lngst": msg = "<b>🏆 Топ оторвавшихся коков</b>"
+    elif stts == 'truet': msg = "<b>🏆 Топ коков за 2 недели</b>"
     else: msg = "<b>trolling</b>"
     for i in top:
         if top[i][2] in ("0", "ID"):
