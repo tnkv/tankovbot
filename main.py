@@ -143,7 +143,7 @@ async def cock(message: types.Message):
     
         userindb = userindb[0]
         db_tgid, db_reg_date, db_cock_lenght, db_last_cock, db_old_cock, db_first_name, db_last_name, db_username = userindb
-        if db_last_cock+86400 <= int(time()):
+        if db_last_cock+86340 <= int(time()):
             deystv = await chance(db_cock_lenght)
             if isinstance(deystv, int):
                 db_cock_lenght += deystv
@@ -168,7 +168,7 @@ async def cock(message: types.Message):
             conn.close()
             await message.reply(msg)
         else:
-            msg_we = await message.reply(wait(db_last_cock + 86400 - int(time())))
+            msg_we = await message.reply(wait(db_last_cock + 86340 - int(time())))
             conn.close()
             await asyncio.sleep(10)
             try:
