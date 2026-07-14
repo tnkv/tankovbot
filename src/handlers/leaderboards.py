@@ -32,22 +32,35 @@ async def send_top(message: Message, session: AsyncSession, stts: str):
     msg = format_top_message(users, stts)
     await message.answer(msg, disable_web_page_preview=True)
 
+from aiogram.filters import Filter
+from aiogram.filters.command import CommandObject
+
+class IsLeaderboardAlias(Filter):
+    async def __call__(self, message: Message, command: CommandObject):
+        if not command.args:
+            return False
+            
+        args = command.args.split()
+        if len(args) == 1:
+            alias = args[0].lower()
+            if (alias in config.cock_top_aliases or
+                alias in config.cock_atop_aliases or
+                alias in config.cock_lngst_aliases or
+                alias in config.cock_ttop_aliases):
+                return {"alias": alias}
+        return False
+
 # Handles alias from /cock command
-@router.message(Command("кок", "cock"))
-async def cock_alias_cmd(message: Message, session: AsyncSession):
-    msg_parts = message.text.split()
-    if len(msg_parts) == 2:
-        alias = msg_parts[1].lower()
-        if alias in config.cock_top_aliases:
-            await send_top(message, session, "top")
-        elif alias in config.cock_atop_aliases:
-            await send_top(message, session, "atop")
-        elif alias in config.cock_lngst_aliases:
-            await send_top(message, session, "lngst")
-        elif alias in config.cock_ttop_aliases:
-            await send_top(message, session, "truet")
-        else:
-            await message.reply(NOT_FOUND)
+@router.message(Command("кок", "cock"), IsLeaderboardAlias())
+async def cock_alias_cmd(message: Message, session: AsyncSession, alias: str):
+    if alias in config.cock_top_aliases:
+        await send_top(message, session, "top")
+    elif alias in config.cock_atop_aliases:
+        await send_top(message, session, "atop")
+    elif alias in config.cock_lngst_aliases:
+        await send_top(message, session, "lngst")
+    elif alias in config.cock_ttop_aliases:
+        await send_top(message, session, "truet")
 
 @router.message(Command("кокт", "top", "cockt", "топ"))
 async def top_cmd(message: Message, session: AsyncSession):

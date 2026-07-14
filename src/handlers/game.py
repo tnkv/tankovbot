@@ -13,16 +13,7 @@ router = Router(name="game")
 
 @router.message(Command("кок", "cock"))
 async def cock_cmd(message: Message, user: User, session: AsyncSession):
-    msg_parts = message.text.split()
-    
-    # If the user typed an alias, let the leaderboards router handle it
-    if len(msg_parts) == 2:
-        alias = msg_parts[1].lower()
-        if (alias in config.cock_top_aliases or 
-            alias in config.cock_atop_aliases or 
-            alias in config.cock_lngst_aliases or 
-            alias in config.cock_ttop_aliases):
-            return
+    # Arguments are ignored for the cock roll, any aliases are handled by leaderboards router
             
     from datetime import datetime, timedelta, timezone
     

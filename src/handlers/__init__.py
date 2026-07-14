@@ -6,6 +6,6 @@ from .leaderboards import router as leaderboards_router
 def get_routers() -> tuple[Router, ...]:
     return (
         basic_router,
-        game_router,
         leaderboards_router,
+        game_router,
     )
