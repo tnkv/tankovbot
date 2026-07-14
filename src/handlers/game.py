@@ -24,11 +24,17 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
             alias in config.cock_ttop_aliases):
             return
             
+    from datetime import datetime, timedelta
+    
     current_time = int(time.time())
     
-    # Check cooldown (86340 seconds to match original logic)
-    if user.last_cock + 86340 > current_time:
-        remaining_time = (user.last_cock + 86340) - current_time
+    # Check cooldown (resets at midnight)
+    last_roll_date = datetime.fromtimestamp(user.last_cock).date() if user.last_cock else None
+    now = datetime.fromtimestamp(current_time)
+    
+    if last_roll_date == now.date():
+        next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        remaining_time = int((next_midnight - now).total_seconds())
         wait_m = wait_msg(remaining_time)
         msg_we = await message.reply(wait_m)
         
