@@ -20,7 +20,7 @@ async def on_shutdown(bot: Bot):
 
 async def main():
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.WARNING,
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s"
     )
     
