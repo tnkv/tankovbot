@@ -18,7 +18,7 @@ if config.config_file_name is not None:
 
 import sys
 import os
-sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.database.models import Base
 from src.config import config as app_config
