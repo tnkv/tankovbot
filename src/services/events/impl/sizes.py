@@ -30,7 +30,7 @@ sizes_events = [
     ConditionEvent(
         name="Мороз",
         condition=lambda u, dt: u.cock_length < 10 and dt.month in [12, 1, 2],
-        chance_percent=10.0, action=-10,
+        chance_percent=1.0, action=-10,
         text="🥶 Ну он просто замерз! Скукожился на -10 см."
     ),
     ConditionEvent(
