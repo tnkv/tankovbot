@@ -12,54 +12,54 @@ memes_events = [
     ),
     GenericChanceEvent(
         name="Синий мет", chance_percent=0.01, action=99,
-        text="🎩 Джесси, нам нужно варить! Чистейший продукт дал приход на +99.1 см!"
+        text="🎩 Джесси, нам нужно варить! Чистейший продукт дал мощный приход!"
     ),
     GenericChanceEvent(
         name="Болото Шрека", chance_percent=0.1, action=40,
-        text="🟢 SOMEBODY ONCE TOLD ME... Шрек защищает твое болото! +40 см зелёной мощи."
+        text="🟢 SOMEBODY ONCE TOLD ME... Шрек защищает твое болото! Зелёная мощь!"
     ),
     GenericChanceEvent(
         name="Рикролл", chance_percent=1.0, action=0,
-        text="🕺 Never gonna give you up... Твой кок затанцевал и остался на месте (+0 см)."
+        text="🕺 Never gonna give you up... Твой кок затанцевал и остался на месте."
     ),
     GenericChanceEvent(
         name="Not Stonks", chance_percent=1.0, action=-15,
-        text="📉 Акции твоего стояка резко обвалились на бирже мемов. -15 см. Not Stonks."
+        text="📉 Акции твоего стояка резко обвалились на бирже мемов. Not Stonks."
     ),
     GenericChanceEvent(
         name="Stonks", chance_percent=0.1, action=25,
-        text="📈 Волк с Уолл-стрит завидует твоему росту! Актив поднялся на +25 см! Stonks."
+        text="📈 Волк с Уолл-стрит завидует твоему росту! Актив поднялся! Stonks."
     ),
     GenericChanceEvent(
         name="Бебра", chance_percent=1.0, action=-10,
-        text="🤢 Ты смачно понюхал бебру, но она оказалась токсичной. -10 см за любопытство."
+        text="🤢 Ты смачно понюхал бебру, но она оказалась токсичной. Токсичность!"
     ),
     GenericChanceEvent(
         name="ГигаЧад", chance_percent=0.01, action=50,
-        text="⬛ Безупречная челюсть, стальной взгляд. Ты стал ГигаЧадом. +50 см монолитной уверенности."
+        text="⬛ Безупречная челюсть, стальной взгляд. Ты стал ГигаЧадом. Монолитная уверенность!"
     ),
     GenericChanceEvent(
         name="Думер", chance_percent=1.0, action=-5,
-        text="🎧 В наушниках играет пост-панк, на улице серый дождь... Всё тлен. -5 см из-за депрессии."
+        text="🎧 В наушниках играет пост-панк, на улице серый дождь... Всё тлен. Депрессия."
     ),
     GenericChanceEvent(
         name="Литералли ми", chance_percent=1.0, action=10,
-        text="🚗 Да, я не умер в конце Драйва. Ты — это Райан Гослинг. Держи зубочистку и +10 см."
+        text="🚗 Да, я не умер в конце Драйва. Ты — это Райан Гослинг. Держи зубочистку."
     ),
     GenericChanceEvent(
         name="JoJo Ref", chance_percent=0.1, action=20,
-        text="ORA ORA ORA! 👊 Твой станд пробудился и удлинил агрегат на +20 см! (Да, это отсылка к ДжоДжо)."
+        text="ORA ORA ORA! 👊 Твой станд пробудился и удлинил агрегат! (Да, это отсылка к ДжоДжо)."
     ),
     GenericChanceEvent(
         name="Сигма", chance_percent=0.1, action=30,
-        text="💼 Проснулся в 4 утра, принял ледяной душ, заигнорил женщин. +30 см за сигма-гриндсет."
+        text="💼 Проснулся в 4 утра, принял ледяной душ, заигнорил женщин. Сигма-гриндсет!"
     ),
     GenericChanceEvent(
         name="Backrooms", chance_percent=0.001, action=-50,
-        text="🚪 Твой кок провалился сквозь текстуры реальности прямо в Закулисье (Backrooms). -50 см."
+        text="🚪 Твой кок провалился сквозь текстуры реальности прямо в Закулисье (Backrooms)."
     ),
     GenericChanceEvent(
         name="Amogus", chance_percent=1.0, action=-15,
-        text="🔪 SUS. Среди нас предатель... И он отрезал тебе 15 см в электрической!"
+        text="🔪 SUS. Среди нас предатель... И он отрезал кусок в электрической!"
     )
 ]
