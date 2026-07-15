@@ -24,11 +24,7 @@ holidays_events = [
         month=1, day=1, chance_percent=25.0, action=31,
         text="🎅 Дед Мороз положил тебе под елочку царский подарок! Забирай свои законные +31 см в новом году!"
     ),
-    CalendarEvent(
-        name="Скелет в шкафу",
-        month=10, day=31, chance_percent=10.0, action="otval",
-        text="💀 СУЕТА! Твой кок испугался призраков, скукожился и втянулся внутрь. Полный отвал (0 см)."
-    ),
+
     CalendarEvent(
         name="Купидон промазал",
         month=2, day=14, chance_percent=50.0, 
