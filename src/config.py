@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     cock_atop_aliases: List[str] = ["антитоп", "атоп", "ат", "antitop", "atop", "at"]
     cock_lngst_aliases: List[str] = ["lngst", "лнгст", "лтоп", "otv", "отв", "otval", "отвал", "лонгест", "longest"]
     cock_ttop_aliases: List[str] = ["трутоп", "ттоп", "тт", "truetop", "ttop", "tt"]
+    cock_streak_aliases: List[str] = ["стояк", "ст", "stoyak", "st"]
 
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 

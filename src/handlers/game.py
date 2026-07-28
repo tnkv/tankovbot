@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import config
 from src.database.models import User
 from src.services.game import calculate_cock_growth
-from src.utils.texts import cock_msg, wait_msg
+from src.utils.texts import cock_msg, wait_msg, spam_penalty_msg
 
 router = Router(name="game")
 
@@ -27,11 +27,28 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
     now = datetime.fromtimestamp(current_time, tz=msk_tz)
     
     if last_roll_date == now.date():
-        next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-        remaining_time = int((next_midnight - now).total_seconds())
-        wait_m = wait_msg(remaining_time)
-        msg_we = await message.reply(wait_m)
+        user.spam_clicks += 1
         
+        streak = user.streak
+        if streak < 10:
+            penalty = 0
+        elif streak < 50:
+            penalty = 1
+        else:
+            penalty = min(10, 2 + (streak - 50) // 100)
+            
+        if penalty > 0:
+            user.cock_length -= penalty
+            msg_we = await message.reply(spam_penalty_msg(penalty))
+        else:
+            next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+            remaining_time = int((next_midnight - now).total_seconds())
+            wait_m = wait_msg(remaining_time)
+            msg_we = await message.reply(wait_m)
+            
+        await session.commit()
+        
+        # Delete the message after 10 seconds to not clutter the chat
         await asyncio.sleep(10)
         try:
             await message.delete()
@@ -39,6 +56,20 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
         except Exception:
             pass
         return
+
+    # Calculate streak before resetting last_cock
+    lost_streak = False
+    old_streak = user.streak
+    if last_roll_date:
+        if (now.date() - last_roll_date).days == 1:
+            user.streak += 1
+        else:
+            user.streak = 1
+            lost_streak = True
+    else:
+        user.streak = 1
+
+    user.spam_clicks = 0
 
     # Send initial rolling message
     roll_msg = await message.reply("🎲 Крутим кок...")
@@ -59,6 +90,11 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
             if user.old_cock < user.cock_length:
                 user.old_cock = user.cock_length
             user.cock_length = 0
+            
+    if lost_streak and old_streak > 1:
+        final_msg += f"\n\n😭 ВЫ ПОТЕРЯЛИ СТОЯК! (Он длился {old_streak} дней)"
+    elif user.streak > 1:
+        final_msg += f"\n\n🔥 Ваш стояк: {user.streak} дней"
             
     user.last_cock = current_time
     await session.commit()

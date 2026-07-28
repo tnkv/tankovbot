@@ -11,6 +11,7 @@ from src.services.events.impl.sizes import sizes_events
 from src.services.events.impl.memes import memes_events
 from src.services.events.impl.absurd import absurd_events
 from src.services.events.impl.mythical import mythical_events
+from src.services.events.impl.streak import streak_events
 
 # Register events
 event_registry.register(DefaultEvent())
@@ -21,6 +22,7 @@ for e in sizes_events: event_registry.register(e)
 for e in memes_events: event_registry.register(e)
 for e in absurd_events: event_registry.register(e)
 for e in mythical_events: event_registry.register(e)
+for e in streak_events: event_registry.register(e)
 
 def calculate_cock_growth(user: User) -> Tuple[Union[int, str], str]:
     """

@@ -24,6 +24,8 @@ async def send_top(message: Message, session: AsyncSession, stts: str):
         # 604800 seconds = 1 week
         cutoff = int(time.time()) - 604800
         query = query.where(User.last_cock >= cutoff).order_by(User.cock_length.desc())
+    elif stts == "streak":
+        query = query.where(User.streak > 1).order_by(User.streak.desc())
         
     query = query.limit(10)
     result = await session.execute(query)
@@ -46,7 +48,8 @@ class IsLeaderboardAlias(Filter):
             if (alias in config.cock_top_aliases or
                 alias in config.cock_atop_aliases or
                 alias in config.cock_lngst_aliases or
-                alias in config.cock_ttop_aliases):
+                alias in config.cock_ttop_aliases or
+                alias in config.cock_streak_aliases):
                 return {"alias": alias}
         return False
 
@@ -61,6 +64,8 @@ async def cock_alias_cmd(message: Message, session: AsyncSession, alias: str):
         await send_top(message, session, "lngst")
     elif alias in config.cock_ttop_aliases:
         await send_top(message, session, "truet")
+    elif alias in config.cock_streak_aliases:
+        await send_top(message, session, "streak")
 
 @router.message(Command("кокт", "top", "cockt", "топ"))
 async def top_cmd(message: Message, session: AsyncSession):
@@ -77,3 +82,7 @@ async def ltop_cmd(message: Message, session: AsyncSession):
 @router.message(Command("коктт", "ttop", "cocktt", "ттоп"))
 async def ttop_cmd(message: Message, session: AsyncSession):
     await send_top(message, session, "truet")
+
+@router.message(Command("кокст", "st", "cockst", "стояк"))
+async def st_cmd(message: Message, session: AsyncSession):
+    await send_top(message, session, "streak")

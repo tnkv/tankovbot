@@ -16,7 +16,8 @@ async def profile_cmd(message: Message, user: User):
         db_reg_date=user.register_date,
         db_cock_length=user.cock_length,
         db_last_cock=user.last_cock,
-        db_old_cock=user.old_cock
+        db_old_cock=user.old_cock,
+        db_streak=user.streak
     )
     await message.reply(msg)
 

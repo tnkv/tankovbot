@@ -10,17 +10,28 @@ def format_top_message(users: Sequence[User], stts: str) -> str:
         msg = "<b>🏆 Топ оторвавшихся коков</b>"
     elif stts == "truet": 
         msg = "<b>🏆 Топ коков за 2 недели</b>"
+    elif stts == "streak":
+        msg = "<b>🏆 Топ стояков</b>"
     else: 
         msg = "<b>trolling</b>"
         
     for i, user in enumerate(users, start=1):
-        value = user.old_cock if stts == "lngst" else user.cock_length
-        if value == 0:
+        if stts == "lngst":
+            value = user.old_cock
+            value_str = f"{value} см."
+        elif stts == "streak":
+            value = user.streak
+            value_str = f"стояк {value} дней"
+        else:
+            value = user.cock_length
+            value_str = f"{value} см."
+            
+        if value <= 0:
             continue
             
         if user.username and user.username != "None":
-            msg += f'\n{i}) <a href="t.me/{user.username}">{user.full_name}</a>: {value} см.'
+            msg += f'\n{i}) <a href="t.me/{user.username}">{user.full_name}</a>: {value_str}'
         else:
-            msg += f"\n{i}) <code>{user.tgid}</code>: {user.full_name} - {value} см."
+            msg += f"\n{i}) <code>{user.tgid}</code>: {user.full_name} - {value_str}"
             
     return msg

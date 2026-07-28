@@ -13,6 +13,8 @@ class User(Base):
     cock_length: Mapped[int] = mapped_column("cock_lenght", Integer, default=0)
     last_cock: Mapped[int] = mapped_column(Integer, default=0)
     old_cock: Mapped[int] = mapped_column(Integer, default=0)
+    streak: Mapped[int] = mapped_column(Integer, default=0)
+    spam_clicks: Mapped[int] = mapped_column(Integer, default=0)
     first_name: Mapped[str | None] = mapped_column(String, nullable=True)
     last_name: Mapped[str | None] = mapped_column(String, nullable=True)
     username: Mapped[str | None] = mapped_column(String, nullable=True)
