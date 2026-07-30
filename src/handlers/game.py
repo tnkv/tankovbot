@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import config
 from src.database.models import User
 from src.services.game import calculate_cock_growth
-from src.utils.texts import cock_msg, wait_msg, spam_penalty_msg
+from src.utils.texts import cock_msg, wait_msg, spam_penalty_msg, pluralize_days
 
 router = Router(name="game")
 
@@ -92,9 +92,9 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
             user.cock_length = 0
             
     if lost_streak and old_streak > 1:
-        final_msg += f"\n\n😭 ВЫ ПОТЕРЯЛИ СТОЯК! (Он длился {old_streak} дней)"
+        final_msg += f"\n\n😭 ВЫ ПОТЕРЯЛИ СТОЯК! (Он длился {pluralize_days(old_streak)})"
     elif user.streak > 1:
-        final_msg += f"\n\n🔥 Ваш стояк: {user.streak} дней"
+        final_msg += f"\n\n🔥 Ваш стояк: {pluralize_days(user.streak)}"
             
     user.last_cock = current_time
     await session.commit()

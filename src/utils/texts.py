@@ -2,6 +2,17 @@ from datetime import timedelta, datetime
 import locale
 
 CAN_AFTER_DAY = "\nВы сможете крутануть свой кок ещё раз завтра."
+
+def pluralize_days(n: int) -> str:
+    n_mod_100 = n % 100
+    if 11 <= n_mod_100 <= 14:
+        return f"{n} дней"
+    n_mod_10 = n % 10
+    if n_mod_10 == 1:
+        return f"{n} день"
+    elif 2 <= n_mod_10 <= 4:
+        return f"{n} дня"
+    return f"{n} дней"
 NOT_FOUND = "Команда или аргумент некорректны! Проверьте написание если уверены в наличии данного функционала."
 START_MSG = """Бот с функцией крутануть кок ✅
 
@@ -45,7 +56,7 @@ def profile_msg(db_reg_date: int, db_cock_length: int, db_last_cock: int, db_old
     reg_date_str = f"{datetime.utcfromtimestamp(db_reg_date + (3600 * 3)).strftime('%d %b. %Y г., %H:%M')} МСК"
     last_cock_str = f"{datetime.utcfromtimestamp(db_last_cock + (3600 * 3)).strftime('%d %b. %Y г., %H:%M')} МСК"
     
-    streak_str = f"\n🔥 Ваш стояк: {db_streak} дней" if db_streak > 1 else ""
+    streak_str = f"\n🔥 Ваш стояк: {pluralize_days(db_streak)}" if db_streak > 1 else ""
     
     return f"""✅ Длина вашего кока: {db_cock_length} см.
 🚀 Максимально отпавший кок: {db_old_cock}

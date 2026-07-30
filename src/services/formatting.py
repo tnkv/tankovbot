@@ -1,5 +1,6 @@
 from typing import Sequence
 from src.database.models import User
+from src.utils.texts import pluralize_days
 
 def format_top_message(users: Sequence[User], stts: str) -> str:
     if stts == "top": 
@@ -21,7 +22,7 @@ def format_top_message(users: Sequence[User], stts: str) -> str:
             value_str = f"{value} см."
         elif stts == "streak":
             value = user.streak
-            value_str = f"стояк {value} дней"
+            value_str = f"стояк {pluralize_days(value)}"
         else:
             value = user.cock_length
             value_str = f"{value} см."

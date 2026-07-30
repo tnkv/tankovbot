@@ -3,6 +3,7 @@ from datetime import datetime
 import random
 from src.database.models import User
 from src.services.events.base import GameEvent
+from src.utils.texts import pluralize_days
 
 class StreakEvent(GameEvent):
     name = "Бонус за Стояк"
@@ -22,7 +23,7 @@ class StreakEvent(GameEvent):
             bonus = min(10, 2 + (streak - 50) // 100)
             
         total_growth = base_growth + bonus
-        msg = f"🔥 Ваша преданность поражает! За стояк в {streak} дней Вы получаете бонус (+{bonus} см)!"
+        msg = f"🔥 Ваша преданность поражает! За стояк в {pluralize_days(streak)} Вы получаете бонус (+{bonus} см)!"
         
         return total_growth, msg
 

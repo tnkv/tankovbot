@@ -25,7 +25,7 @@ async def send_top(message: Message, session: AsyncSession, stts: str):
         cutoff = int(time.time()) - 604800
         query = query.where(User.last_cock >= cutoff).order_by(User.cock_length.desc())
     elif stts == "streak":
-        query = query.where(User.streak > 1).order_by(User.streak.desc())
+        query = query.where(User.streak > 0).order_by(User.streak.desc())
         
     query = query.limit(10)
     result = await session.execute(query)
