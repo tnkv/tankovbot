@@ -27,7 +27,7 @@ def format_top_message(users: Sequence[User], stts: str) -> str:
             value = user.cock_length
             value_str = f"{value} см."
             
-        if value <= 0:
+        if value == 0:
             continue
             
         if user.username and user.username != "None":
