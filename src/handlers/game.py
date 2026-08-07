@@ -27,6 +27,9 @@ async def cock_cmd(message: Message, user: User, session: AsyncSession):
     now = datetime.fromtimestamp(current_time, tz=msk_tz)
     
     if last_roll_date == now.date():
+        if user.cock_length < 0:
+            return
+            
         user.spam_clicks += 1
         
         streak = user.streak
